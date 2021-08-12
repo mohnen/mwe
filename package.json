@@ -5,8 +5,8 @@
   "main": "http://localhost:1234",
   "scripts": {
     "serve": "parcel index.html",
-    "nw-serve": "nw ."
-    "build": "build --tasks win-x64 .",
+    "nw-serve": "nw .",
+    "build": "build --tasks win-x64 ."
   },
   "dependencies": {
     "vue": "^2.6.11"
