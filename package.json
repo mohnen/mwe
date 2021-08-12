@@ -2,15 +2,20 @@
   "name": "vue",
   "version": "0.1.0",
   "private": true,
+  "main": "http://localhost:1234",
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "serve": "parcel index.html",
+    "nw-serve": "nw ."
+    "build": "build --tasks win-x64 .",
   },
   "dependencies": {
     "vue": "^2.6.11"
   },
   "devDependencies": {
     "@vue/cli-service": "~4.5.0",
+    "nw": "^0.55.0-sdk",
+    "nwjs-builder-phoenix": "^1.15.0",
+    "parcel-bundler": "^1.12.5",
     "vue-template-compiler": "^2.6.11"
   }
 }
