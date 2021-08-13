@@ -1,8 +1,6 @@
-import Vue from 'vue'
+import { createApp } from 'vue'
 import App from './App.vue'
+import { Quasar } from 'quasar'
+import quasarUserOptions from './quasar-user-options'
 
-Vue.config.productionTip = false
-
-new Vue({
-  render: function (h) { return h(App) },
-}).$mount('#app')
+createApp(App).use(Quasar, quasarUserOptions).mount('#app')
