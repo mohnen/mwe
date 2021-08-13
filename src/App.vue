@@ -1,11 +1,8 @@
 <template>
-  <q-layout view="lHh Lpr lFf" class="shadow-2 rounded-borders">
-    <q-header elevated class="q-electron-drag">
-      <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
+  <q-layout view="lHh Lpr lFf">
+    <q-header class="q-electron-drag">
+      <q-bar>
+        <q-btn dense flat round
           @click="leftDrawerOpen = !leftDrawerOpen"
           aria-label="Menu"
           icon="menu"
@@ -15,10 +12,10 @@
           Quasar App
         </q-toolbar-title>
 
-        <q-btn dense flat icon="minimize" @click="minimize"></q-btn>
-        <q-btn dense flat icon="crop_square" @click="toggleMaximize"></q-btn>
-        <q-btn dense flat icon="close" @click="closeApp"></q-btn>
-      </q-toolbar>
+        <q-btn dense flat icon="minimize" @click="minimize"/>
+        <q-btn dense flat icon="crop_square" @click="toggleMaximize"/>
+        <q-btn dense flat icon="close" @click="closeApp"/>
+      </q-bar>
     </q-header>
 
     <q-drawer
