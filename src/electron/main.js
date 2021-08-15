@@ -1,10 +1,10 @@
-'use strict'
 import path from 'path'
 
 import { app, protocol, BrowserWindow } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS3_DEVTOOLS } from 'electron-devtools-installer'
-import { initialize } from '@electron/remote/main' // <-- add this
+import { initialize } from '@electron/remote/main'
+import settings from 'electron-settings'
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
@@ -16,10 +16,17 @@ protocol.registerSchemesAsPrivileged([
 initialize()
 
 async function createWindow () {
+  await settings.set('main', {
+    width: 600,
+    height: 600
+  })
+
+  console.log()
+
   // Create the browser window.
   const win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: await settings.get('main.width'),
+    height: await settings.get('main.height'),
     useContentSize: true,
     frame: false,
     webPreferences: {
@@ -42,6 +49,9 @@ async function createWindow () {
     win.loadURL('app://./index.html')
   }
 }
+app.on('browser-window-created', (event, window) => {
+    console.log('browser-window-created', window.id)
+})
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
