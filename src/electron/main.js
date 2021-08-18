@@ -20,8 +20,6 @@ async function createWindow () {
     height: 600
   })
 
-  console.log()
-
   // Create the browser window.
   const win = new BrowserWindow({
     width: await settings.get('main.width'),
@@ -73,7 +71,7 @@ async function createWindow () {
 }
 
 app.on('browser-window-created', (event, window) => {
-  console.log('browser-window-created', window.id)
+  // console.log('browser-window-created', window.id)
 })
 
 // Quit when all windows are closed.

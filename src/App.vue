@@ -9,7 +9,7 @@
         /-->
 
         <q-toolbar-title>
-          Markus' Widget Engine
+          {{ package.description }}
         </q-toolbar-title>
 
         <q-btn dense flat icon="minimize" @click="minimize"/>
@@ -89,6 +89,10 @@ export default {
 
   components: {
     HelloWorld
+  },
+
+  computed: {
+    package: () => window.package
   },
 
   setup () {
