@@ -17,7 +17,6 @@ contextBridge.exposeInMainWorld('windowAPI', {
   },
 
   close () {
-    console.log('where am i')
     BrowserWindow.getFocusedWindow().close()
   }
 })

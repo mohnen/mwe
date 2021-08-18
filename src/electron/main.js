@@ -1,8 +1,7 @@
 import path from 'path'
 
-import { app, protocol, BrowserWindow } from 'electron'
+import { app, protocol, BrowserWindow, dialog } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
-import installExtension, { VUEJS3_DEVTOOLS } from 'electron-devtools-installer'
 import { initialize } from '@electron/remote/main'
 import settings from 'electron-settings'
 
@@ -29,6 +28,7 @@ async function createWindow () {
     height: await settings.get('main.height'),
     useContentSize: true,
     frame: false,
+    show: false,
     webPreferences: {
       enableRemoteModule: true,
       preload: path.resolve(__dirname, '..', 'src', 'electron', 'preload.js'),
@@ -48,9 +48,32 @@ async function createWindow () {
     // Load the index.html when not in development
     win.loadURL('app://./index.html')
   }
+
+  win.once('ready-to-show', () => {
+    win.show()
+  })
+
+  win.on('close', (e) => {
+    const wereDevToolsOpened = win.webContents.isDevToolsOpened()
+    if (wereDevToolsOpened) win.webContents.closeDevTools()
+    const choice = dialog.showMessageBoxSync(win,
+      {
+        type: 'question',
+        buttons: ['Yes', 'No, hang on', 'third option'],
+        title: 'Confirm your actions',
+        message: 'Do you really want to close the application?'
+      }
+    )
+    console.log('CHOICE: ', choice)
+    if (choice > 0) {
+      if (wereDevToolsOpened) win.webContents.openDevTools()
+      e.preventDefault()
+    }
+  })
 }
+
 app.on('browser-window-created', (event, window) => {
-    console.log('browser-window-created', window.id)
+  console.log('browser-window-created', window.id)
 })
 
 // Quit when all windows are closed.
@@ -72,14 +95,6 @@ app.on('activate', () => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', async () => {
-  if (isDevelopment && !process.env.IS_TEST) {
-    // Install Vue Devtools
-    try {
-      await installExtension(VUEJS3_DEVTOOLS)
-    } catch (e) {
-      console.error('Vue Devtools failed to install:', e.toString())
-    }
-  }
   createWindow()
 })
 

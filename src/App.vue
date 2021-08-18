@@ -2,14 +2,14 @@
   <q-layout view="lHh Lpr lFf">
     <q-header class="q-electron-drag">
       <q-bar>
-        <q-btn dense flat round
+        <!--q-btn dense flat round
           @click="leftDrawerOpen = !leftDrawerOpen"
           aria-label="Menu"
           icon="menu"
-        />
+        /-->
 
         <q-toolbar-title>
-          Quasar App
+          Markus' Widget Engine
         </q-toolbar-title>
 
         <q-btn dense flat icon="minimize" @click="minimize"/>
@@ -18,7 +18,7 @@
       </q-bar>
     </q-header>
 
-    <q-drawer
+    <!--q-drawer
       v-model="leftDrawerOpen"
       show-if-above
       bordered
@@ -72,7 +72,7 @@
           </q-item-section>
         </q-item>
       </q-list>
-    </q-drawer>
+    </q-drawer-->
 
     <q-page-container>
       <HelloWorld />
