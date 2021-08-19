@@ -1,6 +1,6 @@
 const { contextBridge } = require('electron')
 const { BrowserWindow } = require('@electron/remote')
-const { description, homepage, author } = require('../../package.json')
+const { description, homepage, author, version } = require('../../package.json')
 
 contextBridge.exposeInMainWorld('windowAPI', {
   minimize () {
@@ -23,5 +23,5 @@ contextBridge.exposeInMainWorld('windowAPI', {
 })
 
 contextBridge.exposeInMainWorld('package', {
-  description, homepage, author
+  description, homepage, author, version
 })
