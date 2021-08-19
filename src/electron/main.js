@@ -15,6 +15,7 @@ protocol.registerSchemesAsPrivileged([
 initialize()
 
 async function createWindow () {
+  console.log('create window')
   await settings.set('main', {
     width: 600,
     height: 600
@@ -26,7 +27,6 @@ async function createWindow () {
     height: await settings.get('main.height'),
     useContentSize: true,
     frame: false,
-    show: false,
     webPreferences: {
       enableRemoteModule: true,
       preload: path.resolve(__dirname, '..', 'src', 'electron', 'preload.js'),
@@ -46,10 +46,6 @@ async function createWindow () {
     // Load the index.html when not in development
     win.loadURL('app://./index.html')
   }
-
-  win.once('ready-to-show', () => {
-    win.show()
-  })
 
   win.on('close', (e) => {
     const wereDevToolsOpened = win.webContents.isDevToolsOpened()
