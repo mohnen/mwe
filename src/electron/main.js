@@ -17,12 +17,16 @@ initialize()
 async function createWindow () {
   console.log('create window')
   await settings.set('main', {
+    x: undefined,
+    y: undefined,
     width: 600,
     height: 600
   })
 
   // Create the browser window.
   const win = new BrowserWindow({
+    x: await settings.get('main.x'),
+    y: await settings.get('main.y'),
     width: await settings.get('main.width'),
     height: await settings.get('main.height'),
     useContentSize: true,
@@ -50,7 +54,7 @@ async function createWindow () {
   win.on('close', (e) => {
     const wereDevToolsOpened = win.webContents.isDevToolsOpened()
     if (wereDevToolsOpened) win.webContents.closeDevTools()
-    const choice = dialog.showMessageBoxSync(win,
+    const choice = false && dialog.showMessageBoxSync(win,
       {
         type: 'question',
         buttons: ['Yes', 'No, hang on', 'third option'],
@@ -67,8 +71,15 @@ async function createWindow () {
 }
 
 app.on('browser-window-created', (event, window) => {
-  // console.log('browser-window-created', window.id)
+  // console.log('browser-window-created', window)
+  window.on('move', () => saveWindowProps(window))
+  window.on('resize', async () => await saveWindowProps(window))
 })
+
+async function saveWindowProps(window) {
+    const tag = window.id === 1 ? 'main' : window.id
+    await settings.set(tag, window.getBounds())
+}
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
