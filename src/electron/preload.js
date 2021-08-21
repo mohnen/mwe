@@ -1,5 +1,6 @@
 const { contextBridge } = require('electron')
 const { BrowserWindow } = require('@electron/remote')
+const { description, homepage, author, version } = require('../../package.json')
 
 contextBridge.exposeInMainWorld('windowAPI', {
   minimize () {
@@ -17,7 +18,10 @@ contextBridge.exposeInMainWorld('windowAPI', {
   },
 
   close () {
-    console.log('where am i')
     BrowserWindow.getFocusedWindow().close()
   }
+})
+
+contextBridge.exposeInMainWorld('package', {
+  description, homepage, author, version
 })

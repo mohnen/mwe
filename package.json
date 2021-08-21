@@ -1,6 +1,13 @@
 {
   "name": "mwe",
   "version": "0.1.0",
+  "description": "Markus' Widget Engine",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mohnen/mwe.git"
+  },
+  "homepage": "https://github.com/mohnen/mwe",
+  "author": "Markus Mohnen (https://github.com/mohnen)",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",

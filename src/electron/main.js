@@ -1,6 +1,6 @@
 import path from 'path'
 
-import { app, protocol, BrowserWindow } from 'electron'
+import { app, protocol, BrowserWindow, dialog } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import { initialize } from '@electron/remote/main'
 import settings from 'electron-settings'
@@ -15,12 +15,11 @@ protocol.registerSchemesAsPrivileged([
 initialize()
 
 async function createWindow () {
+  console.log('create window')
   await settings.set('main', {
     width: 600,
     height: 600
   })
-
-  console.log()
 
   // Create the browser window.
   const win = new BrowserWindow({
@@ -47,9 +46,28 @@ async function createWindow () {
     // Load the index.html when not in development
     win.loadURL('app://./index.html')
   }
+
+  win.on('close', (e) => {
+    const wereDevToolsOpened = win.webContents.isDevToolsOpened()
+    if (wereDevToolsOpened) win.webContents.closeDevTools()
+    const choice = dialog.showMessageBoxSync(win,
+      {
+        type: 'question',
+        buttons: ['Yes', 'No, hang on', 'third option'],
+        title: 'Confirm your actions',
+        message: 'Do you really want to close the application?'
+      }
+    )
+    console.log('CHOICE: ', choice)
+    if (choice > 0) {
+      if (wereDevToolsOpened) win.webContents.openDevTools()
+      e.preventDefault()
+    }
+  })
 }
+
 app.on('browser-window-created', (event, window) => {
-    console.log('browser-window-created', window.id)
+  // console.log('browser-window-created', window.id)
 })
 
 // Quit when all windows are closed.
