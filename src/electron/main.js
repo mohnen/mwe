@@ -16,19 +16,21 @@ initialize()
 
 async function createWindow () {
   console.log('create window')
-  await settings.set('main', {
-    x: undefined,
-    y: undefined,
-    width: 600,
-    height: 600
-  })
+  if (!settings.hasSync('main')) {
+    console.log('setting defaults')
+    settings.setSync('main', {
+      x: undefined,
+      y: undefined,
+      width: 600,
+      height: 600
+    })
+  }
 
+  console.log(settings.getSync('main'))
   // Create the browser window.
+  const {x, y, width, height} = settings.getSync('main')
   const win = new BrowserWindow({
-    x: await settings.get('main.x'),
-    y: await settings.get('main.y'),
-    width: await settings.get('main.width'),
-    height: await settings.get('main.height'),
+    x, y, width, height,
     useContentSize: true,
     frame: false,
     webPreferences: {
@@ -73,12 +75,12 @@ async function createWindow () {
 app.on('browser-window-created', (event, window) => {
   // console.log('browser-window-created', window)
   window.on('move', () => saveWindowProps(window))
-  window.on('resize', async () => await saveWindowProps(window))
+  window.on('resize', () => saveWindowProps(window))
 })
 
-async function saveWindowProps(window) {
+function saveWindowProps(window) {
     const tag = window.id === 1 ? 'main' : window.id
-    await settings.set(tag, window.getBounds())
+    settings.setSync(tag, window.getBounds())
 }
 
 // Quit when all windows are closed.
