@@ -12,8 +12,8 @@
           {{ package.description }}
         </q-toolbar-title>
 
-        <q-btn dense flat icon="minimize" @click="minimize"/>
-        <q-btn dense flat icon="crop_square" @click="toggleMaximize"/>
+        <!-- q-btn dense flat icon="minimize" @click="minimize"/ -->
+        <!-- q-btn dense flat icon="crop_square" @click="toggleMaximize"/ -->
         <q-btn dense flat icon="close" @click="closeApp"/>
       </q-bar>
     </q-header>

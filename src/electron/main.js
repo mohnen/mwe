@@ -36,6 +36,7 @@ async function createWindow () {
     height,
     useContentSize: true,
     frame: false,
+    fullscreenable: false,
     webPreferences: {
       enableRemoteModule: true,
       preload: path.resolve(__dirname, '..', 'src', 'electron', 'preload.js'),
