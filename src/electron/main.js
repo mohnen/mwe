@@ -15,9 +15,9 @@ protocol.registerSchemesAsPrivileged([
 
 initialize()
 
-async function createWindow () {
-  console.log('create window')
-  const win = trackedBrowserWindow('main', {
+async function createWindow (tag, route) {
+  console.log('create window', tag, route)
+  const win = trackedBrowserWindow(tag, {
     useContentSize: true,
     frame: false,
     fullscreenable: false,
@@ -37,7 +37,7 @@ async function createWindow () {
   } else {
     createProtocol('app')
     // Load the index.html when not in development
-    win.loadURL('app://./index.html')
+    win.loadURL(`app://./${route}.html`)
   }
 
   win.on('close', (e) => {
@@ -60,16 +60,9 @@ async function createWindow () {
 
   win.webContents.setWindowOpenHandler(({ url }) => {
     console.log('setWindowOpenHandler', url)
+    // dialog.showErrorBox('window.open disallowed', 'bla bla')
     return {
       action: 'allow',
-      overrideBrowserWindowOptions: {
-        frame: false,
-        fullscreenable: false,
-        transparent: true,
-        webPreferences: {
-          // preload: 'my-child-window-preload-script.js'
-        }
-      }
     }
   })
 }
@@ -86,14 +79,14 @@ app.on('window-all-closed', () => {
 app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
-  if (BrowserWindow.getAllWindows().length === 0) createWindow()
+  if (BrowserWindow.getAllWindows().length === 0) createWindow('main', 'index')
 })
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', async () => {
-  createWindow()
+  createWindow('main', 'index')
 })
 
 // Exit cleanly on request from parent process in development mode.
