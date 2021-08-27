@@ -22,6 +22,7 @@ async function createWindow () {
     frame: false,
     fullscreenable: false,
     webPreferences: {
+      nativeWindowOpen: true,
       enableRemoteModule: true,
       preload: path.resolve(__dirname, '..', 'src', 'electron', 'preload.js'),
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
@@ -54,6 +55,21 @@ async function createWindow () {
     if (choice > 0) {
       if (wereDevToolsOpened) win.webContents.openDevTools()
       e.preventDefault()
+    }
+  })
+
+  win.webContents.setWindowOpenHandler(({ url }) => {
+    console.log('setWindowOpenHandler', url)
+    return {
+      action: 'allow',
+      overrideBrowserWindowOptions: {
+        frame: false,
+        fullscreenable: false,
+        transparent: true,
+        webPreferences: {
+          // preload: 'my-child-window-preload-script.js'
+        }
+      }
     }
   })
 }

@@ -14,7 +14,7 @@
 
         <!-- q-btn dense flat icon="minimize" @click="minimize"/ -->
         <!-- q-btn dense flat icon="crop_square" @click="toggleMaximize"/ -->
-        <q-btn dense flat icon="close" @click="closeApp"/>
+        <q-btn dense flat :icon="biClose" @click="closeApp"/>
       </q-bar>
     </q-header>
 
@@ -81,6 +81,7 @@
 </template>
 
 <script>
+import { biXLg } from '@quasar/extras/bootstrap-icons'
 import { ref } from 'vue'
 import widgetList from './components/WidgetList.vue'
 
@@ -92,7 +93,8 @@ export default {
   },
 
   computed: {
-    package: () => window.package
+    package: () => window.package,
+    biClose: () => biXLg
   },
 
   setup () {
