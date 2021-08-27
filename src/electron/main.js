@@ -3,7 +3,8 @@ import path from 'path'
 import { app, protocol, BrowserWindow, dialog } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import { initialize } from '@electron/remote/main'
-import settings from 'electron-settings'
+
+import trackedBrowserWindow from './TrackedBrowserWindow.js'
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
@@ -16,36 +17,17 @@ initialize()
 
 async function createWindow () {
   console.log('create window')
-  if (!settings.hasSync('main')) {
-    console.log('setting defaults')
-    settings.setSync('main', {
-      x: undefined,
-      y: undefined,
-      width: 600,
-      height: 600
-    })
-  }
-
-  console.log(settings.getSync('main'))
-  // Create the browser window.
-  const { x, y, width, height } = settings.getSync('main')
-  const win = new BrowserWindow({
-    x,
-    y,
-    width,
-    height,
+  const win = trackedBrowserWindow('main', {
     useContentSize: true,
     frame: false,
     fullscreenable: false,
     webPreferences: {
       enableRemoteModule: true,
       preload: path.resolve(__dirname, '..', 'src', 'electron', 'preload.js'),
-      // Use pluginOptions.nodeIntegration, leave this alone
-      // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
       contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION
     }
-  })
+  }, { width: 800, height: 600 })
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
@@ -74,17 +56,6 @@ async function createWindow () {
       e.preventDefault()
     }
   })
-}
-
-app.on('browser-window-created', (event, window) => {
-  // console.log('browser-window-created', window)
-  window.on('move', () => saveWindowProps(window))
-  window.on('resize', () => saveWindowProps(window))
-})
-
-function saveWindowProps (window) {
-  const tag = window.id === 1 ? 'main' : window.id
-  settings.setSync(tag, window.getBounds())
 }
 
 // Quit when all windows are closed.
