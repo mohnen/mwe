@@ -75,20 +75,20 @@
     </q-drawer-->
 
     <q-page-container>
-      <HelloWorld />
+      <widgetList />
     </q-page-container>
   </q-layout>
 </template>
 
 <script>
 import { ref } from 'vue'
-import HelloWorld from './components/HelloWorld.vue'
+import widgetList from './components/WidgetList.vue'
 
 export default {
   name: 'LayoutDefault',
 
   components: {
-    HelloWorld
+    widgetList
   },
 
   computed: {
