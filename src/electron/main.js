@@ -1,6 +1,6 @@
 import path from 'path'
 
-import { app, protocol, BrowserWindow, dialog } from 'electron'
+import { app, protocol, BrowserWindow, dialog, ipcMain } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import { initialize } from '@electron/remote/main'
 
@@ -32,7 +32,8 @@ async function createWindow (tag, route) {
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
-    await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
+    console.log('loadURL', `${process.env.WEBPACK_DEV_SERVER_URL}/${route}.html`)
+    await win.loadURL(`${process.env.WEBPACK_DEV_SERVER_URL}/${route}.html`)
     if (!process.env.IS_TEST) win.webContents.openDevTools()
   } else {
     createProtocol('app')
@@ -65,6 +66,7 @@ async function createWindow (tag, route) {
       action: 'allow',
     }
   })
+  return win
 }
 
 // Quit when all windows are closed.
@@ -87,6 +89,11 @@ app.on('activate', () => {
 // Some APIs can only be used after this event occurs.
 app.on('ready', async () => {
   createWindow('main', 'index')
+})
+
+ipcMain.handle('newWidget', async (event) => {
+  const widgetwin = await createWindow('widget', 'widget')
+  return widgetwin.id
 })
 
 // Exit cleanly on request from parent process in development mode.

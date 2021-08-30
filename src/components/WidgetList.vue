@@ -25,7 +25,7 @@ export default {
 
   methods: {
     addWidget: function() {
-      this.widgets.push(1)
+      this.widgets.push(window.windowAPI.newWidget())
     }
   },
 

@@ -1,4 +1,4 @@
-const { contextBridge } = require('electron')
+const { contextBridge, ipcRenderer } = require('electron')
 const { BrowserWindow } = require('@electron/remote')
 const { description, homepage, author, version } = require('../../package.json')
 
@@ -19,6 +19,11 @@ contextBridge.exposeInMainWorld('windowAPI', {
 
   close () {
     BrowserWindow.getFocusedWindow().close()
+  },
+
+  newWidget () {
+    console.log('newWidget')
+    return ipcRenderer.invoke('newWidget')
   }
 })
 
