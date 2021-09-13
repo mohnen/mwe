@@ -4,7 +4,7 @@ import { app, protocol, BrowserWindow, dialog, ipcMain } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import { initialize } from '@electron/remote/main'
 
-import trackedBrowserWindow from './TrackedBrowserWindow.js'
+import trackedBrowserWindow from './trackedBrowserWindow.js'
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
